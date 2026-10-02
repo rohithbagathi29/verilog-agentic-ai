@@ -1,39 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Verilog Agentic AI</title>
 
     <style>
+
         :root {
             --bg: #070b14;
             --bg-secondary: #0c1220;
             --panel: rgba(15, 23, 42, 0.78);
-            --panel-solid: #0f172a;
+            --panel-solid: #101827;
             --border: rgba(148, 163, 184, 0.14);
-            --border-bright: rgba(96, 165, 250, 0.32);
+
             --text: #f8fafc;
             --muted: #94a3b8;
-            --blue: #60a5fa;
-            --cyan: #22d3ee;
-            --green: #34d399;
-            --red: #fb7185;
-            --purple: #a78bfa;
+
+            --accent: #60a5fa;
+            --accent-2: #a78bfa;
+
+            --success: #34d399;
+            --warning: #fbbf24;
+            --danger: #fb7185;
+
+            --shadow:
+                0 20px 60px rgba(0, 0, 0, 0.35);
         }
+
 
         * {
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
 
         body {
+
             margin: 0;
+
             min-height: 100vh;
+
             font-family:
                 Inter,
                 ui-sans-serif,
@@ -42,32 +55,41 @@
                 BlinkMacSystemFont,
                 "Segoe UI",
                 sans-serif;
+
             color: var(--text);
+
             background:
                 radial-gradient(
                     circle at 10% 10%,
-                    rgba(37, 99, 235, 0.18),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 90% 20%,
-                    rgba(124, 58, 237, 0.14),
+                    rgba(96, 165, 250, 0.12),
                     transparent 30%
                 ),
                 radial-gradient(
-                    circle at 50% 100%,
-                    rgba(6, 182, 212, 0.08),
-                    transparent 35%
+                    circle at 90% 20%,
+                    rgba(167, 139, 250, 0.10),
+                    transparent 30%
                 ),
-                var(--bg);
+                linear-gradient(
+                    145deg,
+                    #050812,
+                    #0a1020 50%,
+                    #070b14
+                );
         }
 
+
         body::before {
+
             content: "";
+
             position: fixed;
+
             inset: 0;
+
             pointer-events: none;
-            opacity: 0.18;
+
+            opacity: 0.22;
+
             background-image:
                 linear-gradient(
                     rgba(255,255,255,0.025) 1px,
@@ -78,750 +100,1225 @@
                     rgba(255,255,255,0.025) 1px,
                     transparent 1px
                 );
-            background-size: 40px 40px;
+
+            background-size: 42px 42px;
         }
+
 
         .app {
-            position: relative;
-            z-index: 1;
-            width: min(1180px, calc(100% - 32px));
-            margin: 0 auto;
-            padding: 28px 0 60px;
+
+            width: min(
+                1180px,
+                calc(100% - 32px)
+            );
+
+            margin: auto;
+
+            padding:
+                28px 0
+                60px;
         }
 
-        /* NAVBAR */
 
-        .navbar {
+        /* --------------------------------------------------
+           HEADER
+        -------------------------------------------------- */
+
+        header {
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
-            padding: 10px 0 28px;
+
+            margin-bottom: 70px;
         }
+
 
         .brand {
+
             display: flex;
+
             align-items: center;
-            gap: 12px;
+
+            gap: 13px;
         }
+
 
         .brand-icon {
+
             width: 42px;
             height: 42px;
+
             display: grid;
+
             place-items: center;
+
             border-radius: 12px;
-            font-size: 20px;
-            font-weight: 800;
-            color: white;
+
+            font-weight: 900;
+
             background:
                 linear-gradient(
                     135deg,
-                    #2563eb,
-                    #7c3aed
+                    var(--accent),
+                    var(--accent-2)
                 );
+
+            color: #050812;
+
             box-shadow:
-                0 0 30px rgba(59, 130, 246, 0.28);
+                0 0 30px
+                rgba(96, 165, 250, 0.25);
         }
 
-        .brand-name {
-            font-size: 16px;
-            font-weight: 750;
-            letter-spacing: -0.2px;
+
+        .brand-text strong {
+
+            display: block;
+
+            font-size: 15px;
+
+            letter-spacing: 0.4px;
         }
 
-        .brand-subtitle {
-            font-size: 11px;
+
+        .brand-text span {
+
+            display: block;
+
+            margin-top: 3px;
+
             color: var(--muted);
-            margin-top: 2px;
+
+            font-size: 11px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
         }
+
 
         .system-status {
+
             display: flex;
+
             align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            border: 1px solid var(--border);
+
+            gap: 9px;
+
+            padding:
+                8px 12px;
+
+            border:
+                1px solid
+                rgba(52, 211, 153, 0.18);
+
             border-radius: 999px;
-            color: #cbd5e1;
-            background: rgba(15, 23, 42, 0.55);
+
+            color: #a7f3d0;
+
+            background:
+                rgba(52, 211, 153, 0.06);
+
             font-size: 12px;
         }
+
 
         .status-dot {
+
             width: 7px;
             height: 7px;
+
             border-radius: 50%;
-            background: var(--green);
-            box-shadow: 0 0 12px rgba(52, 211, 153, 0.8);
-        }
 
-        /* HERO */
+            background: var(--success);
 
-        .hero {
-            text-align: center;
-            padding: 58px 10px 42px;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 12px;
-            border: 1px solid rgba(96, 165, 250, 0.2);
-            border-radius: 999px;
-            background: rgba(30, 64, 175, 0.1);
-            color: #93c5fd;
-            font-size: 12px;
-            font-weight: 650;
-            letter-spacing: 0.3px;
-        }
-
-        .hero h1 {
-            max-width: 850px;
-            margin: 20px auto 16px;
-            font-size: clamp(38px, 6vw, 68px);
-            line-height: 1.02;
-            letter-spacing: -3px;
-            font-weight: 820;
-        }
-
-        .gradient-text {
-            background:
-                linear-gradient(
-                    110deg,
-                    #ffffff 15%,
-                    #93c5fd 48%,
-                    #67e8f9 75%,
-                    #c4b5fd
-                );
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .hero p {
-            max-width: 720px;
-            margin: 0 auto;
-            color: var(--muted);
-            font-size: 16px;
-            line-height: 1.7;
-        }
-
-        /* WORKSPACE */
-
-        .workspace {
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(15, 23, 42, 0.88),
-                    rgba(8, 15, 28, 0.92)
-                );
             box-shadow:
-                0 30px 90px rgba(0, 0, 0, 0.32),
-                inset 0 1px rgba(255,255,255,0.035);
-            overflow: hidden;
+                0 0 12px
+                var(--success);
+
+            animation: pulse 2s infinite;
         }
 
-        .workspace-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-        }
 
-        .workspace-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        @keyframes pulse {
 
-        .workspace-number {
-            width: 30px;
-            height: 30px;
-            display: grid;
-            place-items: center;
-            border-radius: 9px;
-            background: rgba(59, 130, 246, 0.13);
-            color: #93c5fd;
-            font-size: 12px;
-            font-weight: 800;
-        }
+            0%, 100% {
+                opacity: 1;
+            }
 
-        .workspace-title strong {
-            font-size: 14px;
-        }
-
-        .workspace-title span {
-            display: block;
-            color: var(--muted);
-            font-size: 11px;
-            margin-top: 2px;
-        }
-
-        .workspace-body {
-            padding: 24px;
-        }
-
-        textarea {
-            width: 100%;
-            min-height: 210px;
-            resize: vertical;
-            padding: 18px;
-            color: #e2e8f0;
-            background: rgba(2, 6, 23, 0.68);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            outline: none;
-            font-family:
-                Inter,
-                ui-sans-serif,
-                system-ui,
-                sans-serif;
-            font-size: 14px;
-            line-height: 1.7;
-            transition: 0.2s ease;
-        }
-
-        textarea::placeholder {
-            color: #64748b;
-        }
-
-        textarea:focus {
-            border-color: var(--border-bright);
-            box-shadow:
-                0 0 0 4px rgba(59, 130, 246, 0.07),
-                0 0 40px rgba(59, 130, 246, 0.05);
-        }
-
-        .input-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 14px;
-            gap: 12px;
-        }
-
-        .hint {
-            color: #64748b;
-            font-size: 11px;
-        }
-
-        .generate-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-            min-width: 190px;
-            padding: 12px 18px;
-            border: 0;
-            border-radius: 11px;
-            color: white;
-            background:
-                linear-gradient(
-                    135deg,
-                    #2563eb,
-                    #4f46e5
-                );
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow:
-                0 10px 30px rgba(37, 99, 235, 0.25);
-            transition: transform 0.18s ease,
-                        box-shadow 0.18s ease,
-                        opacity 0.18s ease;
-        }
-
-        .generate-button:hover {
-            transform: translateY(-1px);
-            box-shadow:
-                0 14px 38px rgba(37, 99, 235, 0.35);
-        }
-
-        .generate-button:disabled {
-            opacity: 0.65;
-            cursor: wait;
-            transform: none;
-        }
-
-        /* STATUS */
-
-        .status-panel {
-            display: none;
-            margin-top: 18px;
-            padding: 14px 16px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            background: rgba(2, 6, 23, 0.5);
-        }
-
-        .status-panel.visible {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-        }
-
-        .loader {
-            width: 16px;
-            height: 16px;
-            border: 2px solid #334155;
-            border-top-color: #60a5fa;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
+            50% {
+                opacity: 0.35;
             }
         }
 
-        .status-text {
-            color: #cbd5e1;
-            font-size: 12px;
+
+        /* --------------------------------------------------
+           HERO
+        -------------------------------------------------- */
+
+        .hero {
+
+            max-width: 850px;
+
+            margin: 0 auto 55px;
+
+            text-align: center;
         }
 
-        /* RESULTS */
 
-        .results {
-            display: none;
-            margin-top: 24px;
-        }
+        .eyebrow {
 
-        .results.visible {
-            display: block;
-        }
+            display: inline-flex;
 
-        .results-header {
-            display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
 
-        .results-header h2 {
-            margin: 0;
-            font-size: 19px;
-            letter-spacing: -0.5px;
-        }
+            gap: 8px;
 
-        .result-badge {
-            padding: 7px 11px;
+            padding:
+                7px 12px;
+
+            margin-bottom: 20px;
+
+            border:
+                1px solid
+                rgba(96, 165, 250, 0.18);
+
             border-radius: 999px;
+
+            background:
+                rgba(96, 165, 250, 0.06);
+
+            color: #bfdbfe;
+
             font-size: 11px;
-            font-weight: 750;
-            border: 1px solid rgba(52, 211, 153, 0.25);
-            color: #6ee7b7;
-            background: rgba(16, 185, 129, 0.08);
-        }
 
-        .result-badge.fail {
-            color: #fda4af;
-            background: rgba(244, 63, 94, 0.08);
-            border-color: rgba(244, 63, 94, 0.25);
-        }
+            letter-spacing: 1.2px;
 
-        .metrics {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .metric {
-            padding: 17px;
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            background: rgba(15, 23, 42, 0.58);
-        }
-
-        .metric-label {
-            color: #64748b;
-            font-size: 10px;
             text-transform: uppercase;
+        }
+
+
+        .hero h1 {
+
+            margin: 0;
+
+            font-size:
+                clamp(38px, 6vw, 70px);
+
+            line-height: 0.98;
+
+            letter-spacing: -3px;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #ffffff 20%,
+                    #93c5fd 55%,
+                    #c4b5fd 90%
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+
+        .hero p {
+
+            max-width: 650px;
+
+            margin:
+                24px auto 0;
+
+            color: var(--muted);
+
+            font-size: 16px;
+
+            line-height: 1.7;
+        }
+
+
+        /* --------------------------------------------------
+           REQUEST CARD
+        -------------------------------------------------- */
+
+        .glass-card {
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(15, 23, 42, 0.9),
+                    rgba(15, 23, 42, 0.62)
+                );
+
+            box-shadow: var(--shadow);
+
+            backdrop-filter:
+                blur(18px);
+        }
+
+
+        .request-card {
+
+            padding: 24px;
+        }
+
+
+        .card-label {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 14px;
+        }
+
+
+        .card-label strong {
+
+            font-size: 14px;
+        }
+
+
+        .card-label span {
+
+            color: #64748b;
+
+            font-size: 11px;
+        }
+
+
+        textarea {
+
+            width: 100%;
+
+            min-height: 190px;
+
+            padding: 18px;
+
+            resize: vertical;
+
+            border:
+                1px solid
+                rgba(148, 163, 184, 0.14);
+
+            border-radius: 15px;
+
+            outline: none;
+
+            color: #e2e8f0;
+
+            background:
+                rgba(2, 6, 23, 0.65);
+
+            font-family:
+                inherit;
+
+            font-size: 14px;
+
+            line-height: 1.65;
+
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s;
+        }
+
+
+        textarea:focus {
+
+            border-color:
+                rgba(96, 165, 250, 0.5);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(96, 165, 250, 0.08);
+        }
+
+
+        textarea::placeholder {
+
+            color: #475569;
+        }
+
+
+        .request-footer {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-top: 15px;
+        }
+
+
+        .hint {
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        .generate-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            padding:
+                12px 19px;
+
+            border: 0;
+
+            border-radius: 11px;
+
+            color: #06101d;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #93c5fd,
+                    #c4b5fd
+                );
+
+            font-weight: 800;
+
+            font-size: 13px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+        }
+
+
+        .generate-btn:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 35px
+                rgba(96, 165, 250, 0.22);
+        }
+
+
+        .generate-btn:disabled {
+
+            cursor: not-allowed;
+
+            opacity: 0.55;
+
+            transform: none;
+
+            box-shadow: none;
+        }
+
+
+        /* --------------------------------------------------
+           WORKFLOW
+        -------------------------------------------------- */
+
+        .section {
+
+            margin-top: 30px;
+        }
+
+
+        .section-title {
+
+            margin-bottom: 14px;
+
+            color: #64748b;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.7px;
+
+            text-transform: uppercase;
+        }
+
+
+        .workflow {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(7, 1fr);
+
+            gap: 8px;
+
+            padding: 15px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 17px;
+
+            background:
+                rgba(15, 23, 42, 0.52);
+        }
+
+
+        .workflow-step {
+
+            position: relative;
+
+            padding: 12px 6px;
+
+            text-align: center;
+
+            border-radius: 11px;
+
+            color: #64748b;
+
+            transition:
+                all 0.25s;
+        }
+
+
+        .workflow-step .number {
+
+            width: 27px;
+            height: 27px;
+
+            display: grid;
+
+            place-items: center;
+
+            margin: 0 auto 7px;
+
+            border-radius: 50%;
+
+            border:
+                1px solid
+                rgba(148, 163, 184, 0.14);
+
+            color: #64748b;
+
+            background:
+                rgba(2, 6, 23, 0.5);
+
+            font-size: 10px;
+        }
+
+
+        .workflow-step span {
+
+            display: block;
+
+            font-size: 9px;
+
+            line-height: 1.3;
+        }
+
+
+        .workflow-step.active {
+
+            color: #bfdbfe;
+
+            background:
+                rgba(96, 165, 250, 0.06);
+        }
+
+
+        .workflow-step.active .number {
+
+            color: #dbeafe;
+
+            border-color:
+                rgba(96, 165, 250, 0.4);
+
+            background:
+                rgba(96, 165, 250, 0.15);
+
+            box-shadow:
+                0 0 18px
+                rgba(96, 165, 250, 0.14);
+        }
+
+
+        .workflow-step.done {
+
+            color: #a7f3d0;
+        }
+
+
+        .workflow-step.done .number {
+
+            color: #a7f3d0;
+
+            border-color:
+                rgba(52, 211, 153, 0.3);
+
+            background:
+                rgba(52, 211, 153, 0.1);
+        }
+
+
+        /* --------------------------------------------------
+           RESULT
+        -------------------------------------------------- */
+
+        #resultCard {
+
+            display: none;
+
+            margin-top: 35px;
+
+            animation:
+                slideUp 0.35s ease;
+        }
+
+
+        @keyframes slideUp {
+
+            from {
+                opacity: 0;
+                transform:
+                    translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        .result-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 20px 22px;
+
+            border-bottom:
+                1px solid
+                var(--border);
+        }
+
+
+        .result-header h2 {
+
+            margin: 0;
+
+            font-size: 16px;
+        }
+
+
+        .verification-badge {
+
+            padding:
+                7px 12px;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
             letter-spacing: 0.7px;
         }
 
-        .metric-value {
-            margin-top: 7px;
-            font-size: 15px;
-            font-weight: 750;
-            color: #e2e8f0;
+
+        .verification-badge.pass {
+
+            color: #a7f3d0;
+
+            background:
+                rgba(52, 211, 153, 0.09);
+
+            border:
+                1px solid
+                rgba(52, 211, 153, 0.18);
         }
 
-        .metric-value.pass {
-            color: var(--green);
+
+        .verification-badge.fail {
+
+            color: #fecdd3;
+
+            background:
+                rgba(251, 113, 133, 0.09);
+
+            border:
+                1px solid
+                rgba(251, 113, 133, 0.18);
         }
 
-        .output-grid {
+
+        .result-body {
+
+            padding: 22px;
+        }
+
+
+        .metrics {
+
             display: grid;
-            grid-template-columns: 1fr 1fr;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .metric {
+
+            padding: 14px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 13px;
+
+            background:
+                rgba(2, 6, 23, 0.3);
+        }
+
+
+        .metric-label {
+
+            color: #64748b;
+
+            font-size: 9px;
+
+            letter-spacing: 0.8px;
+
+            text-transform: uppercase;
+        }
+
+
+        .metric-value {
+
+            margin-top: 7px;
+
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+
+        .metric-value.success {
+
+            color: var(--success);
+        }
+
+
+        .code-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
             gap: 14px;
         }
 
-        .output-card {
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            background: rgba(15, 23, 42, 0.58);
+
+        .code-card {
+
+            min-width: 0;
+
             overflow: hidden;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 15px;
+
+            background:
+                #070b14;
         }
 
-        .output-card.full {
-            grid-column: 1 / -1;
-        }
 
-        .output-header {
+        .code-header {
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
-            padding: 13px 15px;
-            border-bottom: 1px solid var(--border);
+
+            padding:
+                12px 14px;
+
+            border-bottom:
+                1px solid
+                var(--border);
         }
 
-        .output-header strong {
-            font-size: 12px;
+
+        .code-header strong {
+
+            font-size: 11px;
         }
 
-        .file-label {
-            color: #64748b;
-            font-family: monospace;
-            font-size: 10px;
+
+        .copy-btn {
+
+            padding:
+                5px 9px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 7px;
+
+            color: #94a3b8;
+
+            background:
+                rgba(148, 163, 184, 0.04);
+
+            font-size: 9px;
+
+            cursor: pointer;
         }
+
+
+        .copy-btn:hover {
+
+            color: white;
+
+            border-color:
+                rgba(148, 163, 184, 0.3);
+        }
+
 
         pre {
+
             margin: 0;
-            padding: 18px;
-            min-height: 160px;
-            max-height: 430px;
+
+            padding: 17px;
+
+            min-height: 300px;
+
+            max-height: 500px;
+
             overflow: auto;
-            white-space: pre-wrap;
-            word-break: break-word;
+
             color: #cbd5e1;
-            background: rgba(2, 6, 23, 0.55);
+
             font-family:
                 "SFMono-Regular",
                 Consolas,
                 "Liberation Mono",
                 monospace;
-            font-size: 12px;
+
+            font-size: 11px;
+
             line-height: 1.65;
+
+            white-space: pre-wrap;
         }
 
-        /* PROCESS */
 
-        .process {
-            margin-top: 34px;
-            padding: 22px;
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            background: rgba(15, 23, 42, 0.45);
+        .report {
+
+            margin-top: 14px;
         }
 
-        .process-title {
-            margin-bottom: 18px;
-            color: #cbd5e1;
-            font-size: 12px;
-            font-weight: 700;
-        }
 
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 8px;
-        }
-
-        .step {
-            position: relative;
-            text-align: center;
-            padding: 11px 6px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: #94a3b8;
-            font-size: 10px;
-        }
-
-        .step::after {
-            content: "→";
-            position: absolute;
-            right: -9px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #475569;
-        }
-
-        .step:last-child::after {
-            display: none;
-        }
-
-        /* FOOTER */
+        /* --------------------------------------------------
+           FOOTER
+        -------------------------------------------------- */
 
         footer {
+
+            margin-top: 55px;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid
+                var(--border);
+
             text-align: center;
-            padding-top: 30px;
+
             color: #475569;
+
             font-size: 10px;
+
+            letter-spacing: 0.4px;
         }
 
-        /* RESPONSIVE */
+
+        /* --------------------------------------------------
+           RESPONSIVE
+        -------------------------------------------------- */
 
         @media (max-width: 800px) {
 
-            .app {
-                width: min(100% - 20px, 680px);
+            .workflow {
+
+                grid-template-columns:
+                    repeat(4, 1fr);
             }
 
-            .hero {
-                padding: 35px 5px;
+            .metrics {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .code-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+        }
+
+
+        @media (max-width: 560px) {
+
+            .app {
+
+                width:
+                    calc(100% - 20px);
+
+                padding-top: 18px;
+            }
+
+            header {
+
+                margin-bottom: 45px;
+            }
+
+            .system-status {
+
+                display: none;
             }
 
             .hero h1 {
-                letter-spacing: -1.8px;
+
+                letter-spacing: -2px;
             }
 
-            .metrics {
-                grid-template-columns: 1fr 1fr;
-            }
+            .request-footer {
 
-            .output-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .output-card.full {
-                grid-column: auto;
-            }
-
-            .steps {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .step::after {
-                display: none;
-            }
-
-            .input-footer {
                 align-items: stretch;
+
                 flex-direction: column;
             }
 
-            .generate-button {
+            .generate-btn {
+
                 width: 100%;
             }
+
+            .workflow {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
         }
 
-        @media (max-width: 480px) {
-
-            .system-status {
-                display: none;
-            }
-
-            .workspace-header {
-                padding: 16px;
-            }
-
-            .workspace-body {
-                padding: 16px;
-            }
-
-            .metrics {
-                grid-template-columns: 1fr;
-            }
-
-            textarea {
-                min-height: 180px;
-            }
-        }
     </style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
 
-    <nav class="navbar">
+
+    <!-- HEADER -->
+
+    <header>
 
         <div class="brand">
 
             <div class="brand-icon">
-                V
+                &lt;/&gt;
             </div>
 
-            <div>
-                <div class="brand-name">
-                    Verilog Agentic AI
-                </div>
+            <div class="brand-text">
 
-                <div class="brand-subtitle">
-                    Intelligent RTL Engineering
-                </div>
+                <strong>
+                    Verilog Agentic AI
+                </strong>
+
+                <span>
+                    RTL Engineering Platform
+                </span>
+
             </div>
 
         </div>
+
 
         <div class="system-status">
+
             <span class="status-dot"></span>
-            System Ready
+
+            SYSTEM READY
+
         </div>
 
-    </nav>
+    </header>
 
+
+
+    <!-- HERO -->
 
     <section class="hero">
 
         <div class="eyebrow">
-            ⚡ AI-POWERED HDL AUTOMATION
+
+            ◈ AI-POWERED HARDWARE ENGINEERING
+
         </div>
 
+
         <h1>
-            From hardware idea to
-            <span class="gradient-text">verified Verilog.</span>
+
+            From language<br>
+            to verified RTL.
+
         </h1>
 
+
         <p>
-            Describe your digital circuit in natural language.
-            The agent understands the requirement, generates RTL and
-            verification logic, compiles the design, runs simulation,
-            and reports the result automatically.
+
+            Describe your digital hardware requirement
+            in natural language. The agentic workflow
+            generates RTL, creates a testbench,
+            compiles, simulates and automatically
+            verifies the result.
+
         </p>
 
     </section>
 
 
-    <main>
 
-        <section class="workspace">
+    <!-- REQUEST -->
 
-            <div class="workspace-header">
+    <section class="glass-card request-card">
 
-                <div class="workspace-title">
+        <div class="card-label">
 
-                    <div class="workspace-number">
-                        01
-                    </div>
+            <strong>
+                Hardware Requirement
+            </strong>
 
-                    <div>
-                        <strong>Hardware specification</strong>
-                        <span>
-                            Describe what you want to build
-                        </span>
-                    </div>
+            <span>
+                NATURAL LANGUAGE INPUT
+            </span>
 
-                </div>
-
-            </div>
+        </div>
 
 
-            <div class="workspace-body">
+        <textarea
+            id="userRequest"
+            placeholder="Example:
 
-                <textarea
-                    id="userRequest"
-                    placeholder="Example:
+I want a 4-bit synchronous up counter.
 
-Create a 2-to-1 multiplexer.
-
-It should have two data inputs called in0 and in1,
-a select input called sel, and an output called out.
-
-When sel is 0, out should equal in0.
-When sel is 1, out should equal in1."
-                ></textarea>
+It should have inputs clk and reset.
+Reset should be active-high and synchronous.
+The counter should increment on every rising edge
+when reset is low."
+        ></textarea>
 
 
-                <div class="input-footer">
+        <div class="request-footer">
 
-                    <div class="hint">
-                        Plain English is enough. The agent will ask
-                        for clarification when required.
-                    </div>
+            <div class="hint">
 
-                    <button
-                        id="generateButton"
-                        class="generate-button"
-                        onclick="generateVerilog()"
-                    >
-                        <span>✦</span>
-                        Generate & Verify
-                    </button>
-
-                </div>
-
-
-                <div
-                    id="statusPanel"
-                    class="status-panel"
-                >
-
-                    <div class="loader"></div>
-
-                    <div
-                        id="statusText"
-                        class="status-text"
-                    >
-                        Processing...
-                    </div>
-
-                </div>
+                Be as specific as you want.
+                The system can identify missing
+                or ambiguous requirements.
 
             </div>
 
-        </section>
+
+            <button
+                class="generate-btn"
+                id="generateButton"
+                onclick="generateVerilog()"
+            >
+
+                <span>⚡</span>
+
+                Generate & Verify
+
+            </button>
+
+        </div>
+
+    </section>
 
 
-        <section
-            id="results"
-            class="results"
-        >
 
-            <div class="results-header">
+    <!-- WORKFLOW -->
 
-                <h2>
-                    Verification results
-                </h2>
+    <section class="section">
 
-                <div
-                    id="resultBadge"
-                    class="result-badge"
-                >
-                    VERIFIED
-                </div>
+        <div class="section-title">
+            Agent Workflow
+        </div>
 
+
+        <div class="workflow">
+
+            <div
+                class="workflow-step"
+                id="step1"
+            >
+                <div class="number">01</div>
+                <span>Requirements</span>
             </div>
 
+
+            <div
+                class="workflow-step"
+                id="step2"
+            >
+                <div class="number">02</div>
+                <span>Specification</span>
+            </div>
+
+
+            <div
+                class="workflow-step"
+                id="step3"
+            >
+                <div class="number">03</div>
+                <span>RTL Generation</span>
+            </div>
+
+
+            <div
+                class="workflow-step"
+                id="step4"
+            >
+                <div class="number">04</div>
+                <span>Testbench</span>
+            </div>
+
+
+            <div
+                class="workflow-step"
+                id="step5"
+            >
+                <div class="number">05</div>
+                <span>Compile</span>
+            </div>
+
+
+            <div
+                class="workflow-step"
+                id="step6"
+            >
+                <div class="number">06</div>
+                <span>Simulation</span>
+            </div>
+
+
+            <div
+                class="workflow-step"
+                id="step7"
+            >
+                <div class="number">07</div>
+                <span>Verification</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- RESULTS -->
+
+    <section
+        class="glass-card"
+        id="resultCard"
+    >
+
+        <div class="result-header">
+
+            <h2>
+                Verification Result
+            </h2>
+
+
+            <div
+                class="verification-badge"
+                id="verificationBadge"
+            >
+                WAITING
+            </div>
+
+        </div>
+
+
+        <div class="result-body">
+
+
+            <!-- METRICS -->
 
             <div class="metrics">
 
                 <div class="metric">
 
                     <div class="metric-label">
-                        Verification
+                        RTL Validation
                     </div>
 
                     <div
-                        id="verificationMetric"
-                        class="metric-value pass"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-                <div class="metric">
-
-                    <div class="metric-label">
-                        RTL validation
-                    </div>
-
-                    <div
-                        id="rtlMetric"
                         class="metric-value"
+                        id="rtlMetric"
                     >
                         —
                     </div>
 
                 </div>
+
 
                 <div class="metric">
 
@@ -830,23 +1327,40 @@ When sel is 1, out should equal in1."
                     </div>
 
                     <div
-                        id="tbMetric"
                         class="metric-value"
+                        id="tbMetric"
                     >
                         —
                     </div>
 
                 </div>
+
 
                 <div class="metric">
 
                     <div class="metric-label">
-                        Simulation
+                        RTL Repairs
                     </div>
 
                     <div
-                        id="simulationMetric"
                         class="metric-value"
+                        id="rtlRepairMetric"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <div class="metric-label">
+                        TB Repairs
+                    </div>
+
+                    <div
+                        class="metric-value"
+                        id="tbRepairMetric"
                     >
                         —
                     </div>
@@ -856,176 +1370,330 @@ When sel is 1, out should equal in1."
             </div>
 
 
-            <div class="output-grid">
 
-                <div class="output-card">
+            <!-- CODE -->
 
-                    <div class="output-header">
-
-                        <strong>Generated RTL</strong>
-
-                        <span class="file-label">
-                            design.v
-                        </span>
-
-                    </div>
-
-                    <pre id="rtlCode">No RTL generated.</pre>
-
-                </div>
+            <div class="code-grid">
 
 
-                <div class="output-card">
+                <div class="code-card">
 
-                    <div class="output-header">
+                    <div class="code-header">
 
-                        <strong>Verification testbench</strong>
+                        <strong>
+                            Generated RTL
+                        </strong>
 
-                        <span class="file-label">
-                            testbench.v
-                        </span>
+                        <button
+                            class="copy-btn"
+                            onclick="copyCode('rtlCode')"
+                        >
+                            Copy
+                        </button>
 
                     </div>
 
-                    <pre id="testbenchCode">No testbench generated.</pre>
+
+                    <pre id="rtlCode">
+No RTL generated yet.
+                    </pre>
 
                 </div>
 
 
-                <div class="output-card full">
 
-                    <div class="output-header">
+                <div class="code-card">
 
-                        <strong>Agent execution report</strong>
+                    <div class="code-header">
 
-                        <span class="file-label">
-                            final_report.json
-                        </span>
+                        <strong>
+                            Generated Testbench
+                        </strong>
+
+                        <button
+                            class="copy-btn"
+                            onclick="copyCode('testbenchCode')"
+                        >
+                            Copy
+                        </button>
 
                     </div>
 
-                    <pre id="finalReport">{}</pre>
+
+                    <pre id="testbenchCode">
+No testbench generated yet.
+                    </pre>
 
                 </div>
+
 
             </div>
 
-        </section>
 
 
-        <section class="process">
+            <!-- REPORT -->
 
-            <div class="process-title">
-                AUTOMATED VERIFICATION PIPELINE
-            </div>
+            <div class="code-card report">
 
-            <div class="steps">
+                <div class="code-header">
 
-                <div class="step">
-                    Understand
+                    <strong>
+                        Verification Report
+                    </strong>
+
+                    <button
+                        class="copy-btn"
+                        onclick="copyCode('finalReport')"
+                    >
+                        Copy
+                    </button>
+
                 </div>
 
-                <div class="step">
-                    Specify
-                </div>
 
-                <div class="step">
-                    Generate RTL
-                </div>
-
-                <div class="step">
-                    Validate
-                </div>
-
-                <div class="step">
-                    Simulate
-                </div>
-
-                <div class="step">
-                    Verify
-                </div>
+                <pre id="finalReport">
+No verification report yet.
+                </pre>
 
             </div>
 
-        </section>
 
-    </main>
+        </div>
+
+    </section>
+
 
 
     <footer>
-        Verilog Agentic AI · Automated RTL generation and verification
+
+        Verilog Agentic AI ·
+        Automated RTL generation and verification
+
     </footer>
+
 
 </div>
 
 
+
 <script>
+
+
+function setWorkflow(activeStep) {
+
+    for (
+        let i = 1;
+        i <= 7;
+        i++
+    ) {
+
+        const step =
+            document.getElementById(
+                "step" + i
+            );
+
+        step.classList.remove(
+            "active",
+            "done"
+        );
+
+
+        if (i < activeStep) {
+
+            step.classList.add(
+                "done"
+            );
+
+        }
+
+
+        if (i === activeStep) {
+
+            step.classList.add(
+                "active"
+            );
+
+        }
+
+    }
+
+}
+
+
+
+function resetWorkflow() {
+
+    for (
+        let i = 1;
+        i <= 7;
+        i++
+    ) {
+
+        document
+            .getElementById(
+                "step" + i
+            )
+            .classList.remove(
+                "active",
+                "done"
+            );
+
+    }
+
+}
+
+
+
+function setResultStatus(status) {
+
+    const badge =
+        document.getElementById(
+            "verificationBadge"
+        );
+
+
+    badge.textContent =
+        status || "UNKNOWN";
+
+
+    badge.className =
+        "verification-badge";
+
+
+    if (
+        status ===
+        "VERIFICATION_PASS"
+    ) {
+
+        badge.classList.add(
+            "pass"
+        );
+
+    }
+
+    else if (
+        status ===
+        "VERIFICATION_FAIL"
+    ) {
+
+        badge.classList.add(
+            "fail"
+        );
+
+    }
+
+}
+
+
 
 async function generateVerilog() {
 
-    const request =
+    const userRequest =
         document
-            .getElementById("userRequest")
+            .getElementById(
+                "userRequest"
+            )
             .value
             .trim();
 
+
     const button =
-        document.getElementById("generateButton");
-
-    const statusPanel =
-        document.getElementById("statusPanel");
-
-    const statusText =
-        document.getElementById("statusText");
-
-    const results =
-        document.getElementById("results");
-
-    const badge =
-        document.getElementById("resultBadge");
+        document
+            .getElementById(
+                "generateButton"
+            );
 
 
-    if (!request) {
+    const resultCard =
+        document
+            .getElementById(
+                "resultCard"
+            );
 
-        statusPanel.classList.add("visible");
 
-        statusText.textContent =
-            "Please describe the hardware you want to build.";
+    if (!userRequest) {
+
+        alert(
+            "Please enter a hardware requirement."
+        );
 
         return;
+
     }
 
 
     button.disabled = true;
 
-    statusPanel.classList.add("visible");
+    button.innerHTML =
+        "<span>⟳</span> Processing...";
 
-    statusText.textContent =
-        "Understanding hardware requirement...";
 
-    results.classList.remove("visible");
+    resultCard.style.display =
+        "block";
+
+
+    setResultStatus(
+        "PROCESSING"
+    );
+
+
+    resetWorkflow();
+
+
+    document.getElementById(
+        "rtlCode"
+    ).textContent =
+        "Generating RTL...";
+
+
+    document.getElementById(
+        "testbenchCode"
+    ).textContent =
+        "Generating testbench...";
+
+
+    document.getElementById(
+        "finalReport"
+    ).textContent =
+        "Running verification workflow...";
 
 
     try {
 
-        statusText.textContent =
-            "Generating RTL and verification testbench...";
+
+        /*
+         * The real backend currently executes
+         * the complete production graph.
+         *
+         * The visual workflow is therefore
+         * presented as a high-level progress
+         * representation.
+         */
+
+
+        setWorkflow(1);
 
 
         const response =
-            await fetch("/generate", {
+            await fetch(
+                ""https://verilog-agentic-ai.onrender.com/generate"",
+                {
+                    method: "POST",
 
-                method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                    body: JSON.stringify({
+                        user_request:
+                            userRequest
+                    })
+                }
+            );
 
-                body: JSON.stringify({
-                    user_request: request
-                })
 
-            });
+        setWorkflow(3);
 
 
         const data =
@@ -1036,117 +1704,207 @@ async function generateVerilog() {
 
             throw new Error(
                 data.detail ||
-                "Generation request failed."
+                "Request failed."
             );
 
         }
 
 
-        statusText.textContent =
-            "Compilation and simulation completed.";
+        setWorkflow(7);
 
 
-        const verification =
-            data.verification_status || "UNKNOWN";
+        /*
+         * Verification status
+         */
+
+        setResultStatus(
+            data.verification_status ||
+            "UNKNOWN"
+        );
 
 
-        document
-            .getElementById("verificationMetric")
-            .textContent = verification;
+        /*
+         * RTL
+         */
+
+        document.getElementById(
+            "rtlCode"
+        ).textContent =
+            data.rtl_code ||
+            "No RTL returned.";
 
 
-        document
-            .getElementById("rtlCode")
-            .textContent =
-                data.rtl_code ||
-                "No RTL generated.";
+        /*
+         * Testbench
+         */
+
+        document.getElementById(
+            "testbenchCode"
+        ).textContent =
+            data.testbench_code ||
+            "No testbench returned.";
 
 
-        document
-            .getElementById("testbenchCode")
-            .textContent =
-                data.testbench_code ||
-                "No testbench generated.";
+        /*
+         * Report
+         */
 
+        document.getElementById(
+            "finalReport"
+        ).textContent =
+            JSON.stringify(
+                data.final_report,
+                null,
+                2
+            );
+
+
+        /*
+         * Metrics
+         */
 
         const report =
             data.final_report || {};
 
 
-        document
-            .getElementById("finalReport")
-            .textContent =
-                JSON.stringify(
-                    report,
-                    null,
-                    2
-                );
+        const rtlValidation =
+            report.rtl_validation || {};
 
 
-        document
-            .getElementById("rtlMetric")
-            .textContent =
-                report.rtl_validation?.status ||
-                "PASS";
+        const tbValidation =
+            report.testbench_validation || {};
 
 
-        document
-            .getElementById("tbMetric")
-            .textContent =
-                report.testbench_validation?.status ||
-                "PASS";
+        document.getElementById(
+            "rtlMetric"
+        ).textContent =
+            rtlValidation.status ||
+            "—";
 
 
-        document
-            .getElementById("simulationMetric")
-            .textContent =
-                report.simulation?.status ||
-                "PASS";
+        document.getElementById(
+            "tbMetric"
+        ).textContent =
+            tbValidation.status ||
+            "—";
 
 
-        if (
-            verification === "VERIFICATION_PASS"
+        document.getElementById(
+            "rtlRepairMetric"
+        ).textContent =
+            report.rtl_repair_attempts ??
+            "—";
+
+
+        document.getElementById(
+            "tbRepairMetric"
+        ).textContent =
+            report.testbench_repair_attempts ??
+            "—";
+
+
+        /*
+         * Mark workflow complete
+         */
+
+        for (
+            let i = 1;
+            i <= 7;
+            i++
         ) {
 
-            badge.textContent =
-                "✓ VERIFIED";
+            document
+                .getElementById(
+                    "step" + i
+                )
+                .classList.remove(
+                    "active"
+                );
 
-            badge.classList.remove("fail");
-
-        } else {
-
-            badge.textContent =
-                "VERIFICATION ISSUE";
-
-            badge.classList.add("fail");
+            document
+                .getElementById(
+                    "step" + i
+                )
+                .classList.add(
+                    "done"
+                );
 
         }
 
 
-        results.classList.add("visible");
+    }
 
-        results.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+    catch (error) {
 
 
-    } catch (error) {
+        setResultStatus(
+            "ERROR"
+        );
 
-        statusText.textContent =
-            "Error: " + error.message;
 
-        results.classList.remove("visible");
+        document.getElementById(
+            "finalReport"
+        ).textContent =
+            error.message;
 
-    } finally {
 
-        button.disabled = false;
+        resetWorkflow();
+
+    }
+
+
+    finally {
+
+        button.disabled =
+            false;
+
+        button.innerHTML =
+            "<span>⚡</span> Generate & Verify";
 
     }
 
 }
 
+
+
+async function copyCode(elementId) {
+
+    const element =
+        document.getElementById(
+            elementId
+        );
+
+
+    const text =
+        element.textContent;
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            text
+        );
+
+        alert(
+            "Copied to clipboard."
+        );
+
+    }
+
+    catch (error) {
+
+        alert(
+            "Unable to copy."
+        );
+
+    }
+
+}
+
+
 </script>
 
+
 </body>
+
 </html>

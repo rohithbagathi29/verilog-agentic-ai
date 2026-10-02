@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# API keys / credentials
+*.key
+*.pem
+credentials.json
+service-account.json
+
+# Jupyter / Colab
+.ipynb_checkpoints/
+
+# Test / simulation temporary files
+*.vvp
+*.vcd
+*.out
+*.log
+
+# Temporary directories
+tmp/
+temp/
+workspace/
+simulation_workspace/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Python tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build / deployment cache
+dist/
+build/
+*.egg-info/
